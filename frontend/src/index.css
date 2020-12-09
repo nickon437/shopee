@@ -19,3 +19,8 @@ code {
 main {
   min-height: 80vh;;
 }
+
+
+.rating span:last-child {
+  margin-left: 0.5rem;
+}
