@@ -1,0 +1,23 @@
+{
+  "name": "shopee",
+  "version": "1.0.0",
+  "description": "Just an e-commerce site",
+  "main": "index.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickon437/shopee.git"
+  },
+  "keywords": [],
+  "author": "Nick On",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nickon437/shopee/issues"
+  },
+  "homepage": "https://github.com/nickon437/shopee#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
