@@ -4,11 +4,11 @@ const Rating = ({ value, numReviews, color }) => {
   const stars = [];
   for (let i = 0; i < 5; i++) {
     if (value - i >= 1) {
-      stars.push(<i style={{ color }} className='fas fa-star' />);
+      stars.push(<i key={i} style={{ color }} className='fas fa-star' />);
     } else if (value - i >= 0.5) {
-      stars.push(<i style={{ color }} className='fas fa-star-half-alt' />);
+      stars.push(<i key={i} style={{ color }} className='fas fa-star-half-alt' />);
     } else {
-      stars.push(<i style={{ color }} className='far fa-star' />);
+      stars.push(<i key={i} style={{ color }} className='far fa-star' />);
     }
   }
 
