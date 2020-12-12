@@ -1,4 +1,3 @@
-import mongooese from 'mongoose';
 import dotenv from 'dotenv';
 import 'colors';
 import users from './data/users.js';
