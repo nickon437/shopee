@@ -6,16 +6,19 @@ import {
 import axios from 'axios';
 import 'redux-thunk';
 
-const productAction = () => async (dispatch) => {
+const fetchProducts = () => async (dispatch) => {
   try {
-    dispatch({ type: FETCH_PRODUCTS_FAIL });
+    dispatch({ type: FETCH_PRODUCTS });
 
     const { data } = await axios.get('/api/products');
 
     dispatch({ type: FETCH_PRODUCTS_SUCCESS, products: data });
   } catch (e) {
-    dispatch({ type: FETCH_PRODUCTS_FAIL, error: e.response?.data?.message ?? e.message });
+    dispatch({
+      type: FETCH_PRODUCTS_FAIL,
+      error: e.response?.data?.message ?? e.message,
+    });
   }
-}
+};
 
-export default productAction;
+export { fetchProducts };
