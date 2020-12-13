@@ -12,7 +12,7 @@ const fetchProducts = () => async (dispatch) => {
 
     const { data } = await axios.get('/api/products');
 
-    dispatch({ type: FETCH_PRODUCTS_SUCCESS, products: data });
+    dispatch({ type: FETCH_PRODUCTS_SUCCESS, payload: data });
   } catch (e) {
     dispatch({
       type: FETCH_PRODUCTS_FAIL,

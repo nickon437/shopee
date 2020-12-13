@@ -10,7 +10,7 @@ const HomePage = () => {
 
   useEffect(() => {
     dispatch(fetchProducts());
-  }, []);
+  }, [dispatch]);
 
   const homePageContent = () => {
     if (productState.loading) {
@@ -18,20 +18,22 @@ const HomePage = () => {
     } else if (productState.error) {
       return <h3>{productState.error}</h3>;
     } else {
-      <Row>
-        {productState.products.map((product) => (
-          <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
-            <Product product={product} />
-          </Col>
-        ))}
-      </Row>;
+      return (
+        <Row>
+          {productState.products.map((product) => (
+            <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
+              <Product product={product} />
+            </Col>
+          ))}
+        </Row>
+      );
     }
   };
 
   return (
     <div>
       <h1>Latest Products</h1>
-      {homePageContent}
+      {homePageContent()}
     </div>
   );
 };
