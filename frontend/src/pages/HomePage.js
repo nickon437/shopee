@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Col, Row } from 'react-bootstrap';
 import Product from '../components/Product';
+import Message from '../components/Message';
+import Loader from '../components/Loader';
 import { fetchProducts } from '../actions/productAction';
 
 const HomePage = () => {
@@ -14,9 +16,9 @@ const HomePage = () => {
 
   const homePageContent = () => {
     if (productState.loading) {
-      return <h2>Loading...</h2>;
+      return <Loader />;
     } else if (productState.error) {
-      return <h3>{productState.error}</h3>;
+      return <Message variant='danger'>{productState.error}</Message>;
     } else {
       return (
         <Row>
