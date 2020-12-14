@@ -1,24 +1,45 @@
 import {
-  FETCH_PRODUCTS,
-  FETCH_PRODUCTS_SUCCESS,
-  FETCH_PRODUCTS_FAIL,
+  FETCH_PRODUCT_LIST,
+  FETCH_PRODUCT_LIST_SUCCESS,
+  FETCH_PRODUCT_LIST_FAIL,
+  FETCH_PRODUCT_DETAILS,
+  FETCH_PRODUCT_DETAILS_SUCCESS,
+  FETCH_PRODUCT_DETAILS_FAIL,
 } from '../constants/productConstants';
 import axios from 'axios';
 import 'redux-thunk';
 
-const fetchProducts = () => async (dispatch) => {
+const fetchProductList = () => async (dispatch) => {
   try {
-    dispatch({ type: FETCH_PRODUCTS });
+    dispatch({ type: FETCH_PRODUCT_LIST });
 
     const { data } = await axios.get('/api/products');
 
-    dispatch({ type: FETCH_PRODUCTS_SUCCESS, payload: data });
+    dispatch({ type: FETCH_PRODUCT_LIST_SUCCESS, payload: data });
   } catch (e) {
+    console.error('Fail to Fetch product list', e.message);
     dispatch({
-      type: FETCH_PRODUCTS_FAIL,
-      error: e.response?.data?.message ?? e.message,
+      type: FETCH_PRODUCT_LIST_FAIL,
+      payload: e.response?.data?.message ?? e.message,
     });
   }
 };
 
-export { fetchProducts };
+const fetchProductDetails = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: FETCH_PRODUCT_DETAILS });
+
+    const { data } = await axios.get(`/api/products/${id}`);
+
+    console.log('Got product list data');
+    dispatch({ type: FETCH_PRODUCT_DETAILS_SUCCESS, payload: data });
+  } catch (e) {
+    console.error('Fail to Fetch product details', e);
+    dispatch({
+      type: FETCH_PRODUCT_DETAILS_FAIL,
+      payload: e.response?.data?.message ?? e.message,
+    });
+  }
+};
+
+export { fetchProductList, fetchProductDetails };
