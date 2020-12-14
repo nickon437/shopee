@@ -6,7 +6,6 @@ import {
   Col,
   ListGroup,
   ListGroupItem,
-  Button,
   FormControl,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +19,7 @@ const ProductPage = ({ match }) => {
   const productDetailsState = useSelector((state) => state.productDetailsState);
   const { loading, error, product } = productDetailsState;
 
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
 
   useEffect(() => {
     dispatch(fetchProductDetails(match.params.id));
@@ -81,13 +80,13 @@ const ProductPage = ({ match }) => {
                 </ListGroupItem>
               )}
               <ListGroupItem>
-                <Button
-                  type='button'
-                  className='btn-block'
+                <Link
+                  to={`/cart/${match.params.id}?qty=${qty}`}
+                  className='btn btn-dark btn-block'
                   disabled={product.countInStock <= 0}
                 >
                   Add to Cart
-                </Button>
+                </Link>
               </ListGroupItem>
             </ListGroup>
           </Col>
