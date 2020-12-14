@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Image,
@@ -7,6 +7,7 @@ import {
   ListGroup,
   ListGroupItem,
   Button,
+  FormControl,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Rating from '../components/Rating';
@@ -18,6 +19,8 @@ const ProductPage = ({ match }) => {
   const dispatch = useDispatch();
   const productDetailsState = useSelector((state) => state.productDetailsState);
   const { loading, error, product } = productDetailsState;
+
+  const [qty, setQty] = useState(0);
 
   useEffect(() => {
     dispatch(fetchProductDetails(match.params.id));
@@ -55,6 +58,28 @@ const ProductPage = ({ match }) => {
               <ListGroupItem>
                 Status: {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
               </ListGroupItem>
+              {product.countInStock > 0 && (
+                <ListGroupItem>
+                  <Row>
+                    <Col>Quantiy</Col>
+                    <Col>
+                      <FormControl
+                        as='select'
+                        value={qty}
+                        onChange={(e) => setQty(e.target.value)}
+                      >
+                        {[...Array(product.countInStock).keys()].map(
+                          (index) => (
+                            <option key={index + 1} value={index + 1}>
+                              {index + 1}
+                            </option>
+                          )
+                        )}
+                      </FormControl>
+                    </Col>
+                  </Row>
+                </ListGroupItem>
+              )}
               <ListGroupItem>
                 <Button
                   type='button'
