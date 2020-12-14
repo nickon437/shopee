@@ -31,7 +31,6 @@ const fetchProductDetails = (id) => async (dispatch) => {
 
     const { data } = await axios.get(`/api/products/${id}`);
 
-    console.log('Got product list data');
     dispatch({ type: FETCH_PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (e) {
     console.error('Fail to Fetch product details', e);
