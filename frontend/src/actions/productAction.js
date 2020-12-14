@@ -17,7 +17,6 @@ const fetchProductList = () => async (dispatch) => {
 
     dispatch({ type: FETCH_PRODUCT_LIST_SUCCESS, payload: data });
   } catch (e) {
-    console.error('Fail to Fetch product list', e.message);
     dispatch({
       type: FETCH_PRODUCT_LIST_FAIL,
       payload: e.response?.data?.message ?? e.message,
@@ -33,7 +32,6 @@ const fetchProductDetails = (id) => async (dispatch) => {
 
     dispatch({ type: FETCH_PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (e) {
-    console.error('Fail to Fetch product details', e);
     dispatch({
       type: FETCH_PRODUCT_DETAILS_FAIL,
       payload: e.response?.data?.message ?? e.message,
