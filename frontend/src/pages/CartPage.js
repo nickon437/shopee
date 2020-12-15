@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../actions/cartActions';
+import { addToCart, removeFromCart } from '../actions/cartActions';
 import Message from '../components/Message';
 import {
   ListGroup,
@@ -28,7 +28,7 @@ const CartPage = ({ match, location }) => {
   }, [dispatch, productId, qty]);
 
   const handleRemoveItemFromCart = (id) => {
-    console.log('remove');
+    dispatch(removeFromCart(id));
   };
 
   const cartItemsContent = (
