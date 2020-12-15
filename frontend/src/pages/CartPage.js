@@ -10,6 +10,7 @@ import {
   FormControl,
   Image,
   Button,
+  Card,
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -30,7 +31,7 @@ const CartPage = ({ match, location }) => {
     console.log('remove');
   };
 
-  const cartContent = (
+  const cartItemsContent = (
     <ListGroup variant='flush'>
       {cartItems.map((item) => (
         <ListGroupItem key={item.id}>
@@ -46,7 +47,7 @@ const CartPage = ({ match, location }) => {
                 as='select'
                 value={item.qty}
                 onChange={(e) =>
-                  dispatch(addToCart(productId, Number(e.target.value)))
+                  dispatch(addToCart(item.id, Number(e.target.value)))
                 }
               >
                 {[...Array(item.countInStock).keys()].map((index) => (
@@ -72,6 +73,37 @@ const CartPage = ({ match, location }) => {
     </ListGroup>
   );
 
+  const totalCartQty = cartItems.reduce((acc, item) => acc + item.qty, 0);
+  const totalCartPrice = cartItems
+    .reduce((acc, item) => acc + item.qty * item.price, 0)
+    .toFixed(2);
+
+  const handleCheckout = () => {
+    console.log('Checkout');
+  };
+
+  const cartSummary = (
+    <Card>
+      <ListGroup>
+        <ListGroupItem>
+          <h3>Summary</h3>
+        </ListGroupItem>
+        <ListGroupItem>Quantity: {totalCartQty}</ListGroupItem>
+        <ListGroupItem>Amount: ${totalCartPrice}</ListGroupItem>
+        <ListGroupItem>
+          <Button
+            type='button'
+            className='btn-block'
+            onClick={handleCheckout}
+            disabled={cartItems.length <= 0}
+          >
+            Proceed to checkout
+          </Button>
+        </ListGroupItem>
+      </ListGroup>
+    </Card>
+  );
+
   return (
     <div>
       <h1>Shopping Cart</h1>
@@ -81,7 +113,8 @@ const CartPage = ({ match, location }) => {
         </Message>
       ) : (
         <Row>
-          <Col md={8}>{cartContent}</Col>
+          <Col md={8}>{cartItemsContent}</Col>
+          <Col md={4}>{cartSummary}</Col>
         </Row>
       )}
     </div>
