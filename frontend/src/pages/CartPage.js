@@ -8,7 +8,9 @@ const CartPage = ({ match, location }) => {
   const qty = Number(location.search?.split('=')[1] ?? 1); 
 
   useEffect(() => {
-    dispatch(addToCart(productId, qty));
+    if (productId) {
+      dispatch(addToCart(productId, qty));
+    }
   }, [dispatch, productId, qty]);
 
 
