@@ -47,4 +47,34 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, getUserProfile };
+/**
+ * @description Register user
+ * @route       POST /api/user/register
+ * @access      Public
+ */
+const registerUser = asyncHandler(async (req, res) => {
+  const { email, password, name } = req.body;
+
+  if (await User.findOne({ email })) {
+    res.status(404);
+    throw new Error('Email is registered');
+  }
+  
+  const user = await User.create({ email, password, name });
+
+  if (user) {
+    res.status(201);
+    res.json({
+      _id: user._id,
+      email: user.email,
+      name: user.name,
+      isAdmin: user.isAdmin,
+      token: generateToken(user._id),
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+export { authUser, getUserProfile, registerUser };
