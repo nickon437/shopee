@@ -1,4 +1,9 @@
-import { USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGIN_FAIL } from '../constants/userConstants';
+import {
+  USER_LOGIN_REQUEST,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_FAIL,
+  USER_LOGOUT,
+} from '../constants/userConstants';
 import 'redux-thunk';
 import axios from 'axios';
 
@@ -9,10 +14,14 @@ const login = (email, password) => async (dispatch) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
-      }
-    }
+      },
+    };
 
-    const { data } = await axios.post('/api/user/login', { email, password }, config);
+    const { data } = await axios.post(
+      '/api/user/login',
+      { email, password },
+      config
+    );
 
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
@@ -23,6 +32,11 @@ const login = (email, password) => async (dispatch) => {
       payload: e.response?.data?.message ?? e.message,
     });
   }
-}
+};
 
-export { login };
+const logout = () => async (dispatch) => {
+  dispatch({ type: USER_LOGOUT });
+  localStorage.removeItem('userInfo');
+};
+
+export { login, logout };

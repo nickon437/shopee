@@ -11,7 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 import FormContainer from '../components/FormContainer';
 import { useDispatch, useSelector } from 'react-redux';
-import { login } from '../actions/userAction';
+import { login } from '../actions/userActions';
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 

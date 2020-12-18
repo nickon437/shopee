@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Rating from '../components/Rating';
-import { fetchProductDetails } from '../actions/productAction';
+import { fetchProductDetails } from '../actions/productActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
