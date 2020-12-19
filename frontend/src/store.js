@@ -6,13 +6,14 @@ import {
   productDetailsReducer,
 } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducers';
-import { userLoginReducer } from './reducers/userReducers';
+import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
 
 const reducer = combineReducers({
   productListState: productListReducer,
   productDetailsState: productDetailsReducer,
   cartState: cartReducer,
   userLoginState: userLoginReducer,
+  userRegisterState: userRegisterReducer,
 });
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
@@ -25,7 +26,7 @@ const userFromStorage = localStorage.getItem('userInfo')
 
 const initialState = { 
   cartState: { cartItems: cartItemsFromStorage },
-  userLoginState: { userInfo: userFromStorage }
+  userLoginState: { userInfo: userFromStorage },
 };
 
 const middleware = [thunk];
