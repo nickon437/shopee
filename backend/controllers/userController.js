@@ -59,7 +59,7 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error('Email is registered');
   }
-  
+
   const user = await User.create({ email, password, name });
 
   if (user) {
@@ -77,4 +77,35 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, getUserProfile, registerUser };
+/**
+ * @description Update user profile
+ * @route       PUT /api/user/profile
+ * @access      Private
+ */
+const updateUser = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body;
+
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    user.name = name ?? user.name;
+    user.email = email ?? user.email;
+    if (password) {
+      user.password = password ?? user.password;
+    }
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      email: updatedUser.email,
+      name: updatedUser.name,
+      isAdmin: updatedUser.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+export { authUser, getUserProfile, registerUser, updateUser };
