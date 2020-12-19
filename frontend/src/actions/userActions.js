@@ -6,6 +6,9 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAIL,
 } from '../constants/userConstants';
 import 'redux-thunk';
 import axios from 'axios';
@@ -70,4 +73,29 @@ const register = (name, email, password) => async (dispatch) => {
   }
 };
 
-export { login, logout, register };
+const update = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_UPDATE_REQUEST });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put('/api/user/profile', user, config);
+
+    dispatch({ type: USER_UPDATE_SUCCESS });
+    dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+
+    localStorage.setItem('userInfo', JSON.stringify(data));
+  } catch (e) {
+    dispatch({
+      type: USER_UPDATE_FAIL,
+      payload: e.response?.data?.message ?? e.message,
+    });
+  }
+};
+
+export { login, logout, register, update };

@@ -5,6 +5,7 @@ import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ProfilePage from './pages/ProfilePage';
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
@@ -19,6 +20,7 @@ const App = () => {
           <Route path='/cart/:id?' component={CartPage} />
           <Route path='/login' component={LoginPage} />
           <Route path='/register' component={RegisterPage} />
+          <Route path='/profile' component={ProfilePage} />
         </Container>
       </main>
       <Footer />
