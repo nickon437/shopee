@@ -1,4 +1,8 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../constants/cartConstants';
+import {
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_UPDATE_SHIPPING_ADDRESS,
+} from '../constants/cartConstants';
 
 import axios from 'axios';
 
@@ -13,19 +17,34 @@ const addToCart = (id, qty) => async (dispatch, getState) => {
       price: data.price,
       countInStock: data.countInStock,
       qty,
-    }
+    },
   });
 
-  localStorage.setItem('cartItems', JSON.stringify(getState().cartState.cartItems));
-}
+  localStorage.setItem(
+    'cartItems',
+    JSON.stringify(getState().cartState.cartItems)
+  );
+};
 
 const removeFromCart = (id) => async (dispatch, getState) => {
   dispatch({
     type: CART_REMOVE_ITEM,
-    payload: id
-  })
+    payload: id,
+  });
 
-  localStorage.setItem('cartItems', JSON.stringify(getState().cartState.cartItems));
-}
+  localStorage.setItem(
+    'cartItems',
+    JSON.stringify(getState().cartState.cartItems)
+  );
+};
 
-export { addToCart, removeFromCart };
+const updateShippingAddress = (address) => (dispatch) => {
+  dispatch({
+    type: CART_UPDATE_SHIPPING_ADDRESS,
+    payload: address,
+  });
+
+  localStorage.setItem('shippingAddress', JSON.stringify(address));
+};
+
+export { addToCart, removeFromCart, updateShippingAddress };

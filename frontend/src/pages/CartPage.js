@@ -78,10 +78,6 @@ const CartPage = ({ match, location }) => {
     .reduce((acc, item) => acc + item.qty * item.price, 0)
     .toFixed(2);
 
-  const handleCheckout = () => {
-    console.log('Checkout');
-  };
-
   const cartSummary = (
     <Card>
       <ListGroup>
@@ -91,14 +87,13 @@ const CartPage = ({ match, location }) => {
         <ListGroupItem>Quantity: {totalCartQty}</ListGroupItem>
         <ListGroupItem>Amount: ${totalCartPrice}</ListGroupItem>
         <ListGroupItem>
-          <Button
-            type='button'
-            className='btn-block'
-            onClick={handleCheckout}
+          <Link
+            to='/login?redirect=/shipping'
+            className='btn btn-dark btn-block'
             disabled={cartItems.length <= 0}
           >
             Proceed to checkout
-          </Button>
+          </Link>
         </ListGroupItem>
       </ListGroup>
     </Card>

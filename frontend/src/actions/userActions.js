@@ -42,7 +42,8 @@ const login = (email, password) => async (dispatch) => {
 
 const logout = () => async (dispatch) => {
   dispatch({ type: USER_LOGOUT });
-  localStorage.removeItem('userInfo');
+  localStorage.clear();
+  // TODO: Clear states
 };
 
 const register = (name, email, password) => async (dispatch) => {
