@@ -8,7 +8,7 @@ import {
   Button,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateShippingAddress } from '../actions/cartActions';
+import { saveShippingAddress } from '../actions/cartActions';
 import CheckoutSteps from '../components/CheckoutSteps';
 
 const ShippingPage = ({ history }) => {
@@ -31,7 +31,7 @@ const ShippingPage = ({ history }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateShippingAddress({ address, city, postalCode, country }));
+    dispatch(saveShippingAddress({ address, city, postalCode, country }));
     history.push('/payment');
   };
 

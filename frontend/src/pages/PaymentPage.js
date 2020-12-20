@@ -2,34 +2,40 @@ import { useState } from 'react';
 import { Button, Col, Form, FormGroup, FormLabel } from 'react-bootstrap';
 import CheckoutSteps from '../components/CheckoutSteps';
 import FormContainer from '../components/FormContainer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { savePaymentMethod } from '../actions/cartActions';
 
 const PaymentPage = ({ history }) => {
-  const [paymentMethod, setPaymentMethod] = useState('Paypal');
+  const cartState = useSelector((state) => state.cartState);
 
-  const cartState = useSelector(state => state.cartState);
-  const { shippingAddress } = cartState;
+  const [paymentMethod, setPaymentMethod] = useState(
+    cartState.paymentMethod ?? 'Paypal'
+  );
 
-  const userLoginState = useSelector(state => state.userLoginState);
+  const dispatch = useDispatch();
+
+  const userLoginState = useSelector((state) => state.userLoginState);
   const { userInfo } = userLoginState;
 
   if (!userInfo) {
-    history.push('/login?redirect=/cart')
-  } if (!shippingAddress) {
+    history.push('/login?redirect=/cart');
+  } else if (!cartState.shippingAddress) {
     history.push('/shipping');
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  }
-  
+    dispatch(savePaymentMethod(paymentMethod));
+    history.push('/placeorder');
+  };
+
   return (
     <FormContainer>
       <CheckoutSteps numSteps={3} />
       <h1>Payment</h1>
       <Form>
         <FormGroup id='payment-method'>
-          <FormLabel as='lengend'>Payment methods</FormLabel>
+          <FormLabel as='legend'>Payment method</FormLabel>
           <Col>
             <Form.Check
               type='radio'
@@ -38,11 +44,13 @@ const PaymentPage = ({ history }) => {
               label='Paypal'
               value='Paypal'
               checked={paymentMethod === 'Paypal'}
-              onSelect={(e) => setPaymentMethod(e.target.value)}
+              onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </Col>
         </FormGroup>
-        <Button type="button" onSubmit={handleSubmit}>Continue</Button>
+        <Button type='button' onClick={handleSubmit}>
+          Continue
+        </Button>
       </Form>
     </FormContainer>
   );
