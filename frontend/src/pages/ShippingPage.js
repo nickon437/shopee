@@ -17,14 +17,17 @@ const ShippingPage = ({ history }) => {
 
   const [address, setAddress] = useState(shippingAddress?.address ?? '');
   const [city, setCity] = useState(shippingAddress?.city ?? '');
-  const [postalCode, setPostalCode] = useState(
-    shippingAddress?.postalCode ?? ''
-  );
+  const [postalCode, setPostalCode] = useState(shippingAddress?.postalCode ?? '');
   const [country, setCountry] = useState(shippingAddress?.country ?? '');
 
   const dispatch = useDispatch();
 
-  // TODO: Redirect non-login users
+  const userLoginState = useSelector(state => state.userLoginState);
+  const { userInfo } = userLoginState;
+
+  if (!userInfo) {
+    history.push('/login?redirect=/cart');
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +37,7 @@ const ShippingPage = ({ history }) => {
 
   return (
     <FormContainer>
-      <CheckoutSteps numSteps={2}/>
+      <CheckoutSteps numSteps={2} />
       <h1>Shipping</h1>
       <Form>
         <FormGroup controlId='address'>
