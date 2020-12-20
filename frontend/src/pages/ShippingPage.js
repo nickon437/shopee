@@ -9,6 +9,7 @@ import {
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateShippingAddress } from '../actions/cartActions';
+import CheckoutSteps from '../components/CheckoutSteps';
 
 const ShippingPage = ({ history }) => {
   const cartState = useSelector((state) => state.cartState);
@@ -33,6 +34,7 @@ const ShippingPage = ({ history }) => {
 
   return (
     <FormContainer>
+      <CheckoutSteps numSteps={2}/>
       <h1>Shipping</h1>
       <Form>
         <FormGroup controlId='address'>
@@ -42,11 +44,7 @@ const ShippingPage = ({ history }) => {
             placeholder='Enter address'
             required
             value={address}
-            onChange={(e) => {
-              console.log(e.target.value);
-              setAddress(e.target.value);
-              console.log(e.target.value);
-            }}
+            onChange={(e) => setAddress(e.target.value)}
           />
         </FormGroup>
         <FormGroup controlId='city'>
