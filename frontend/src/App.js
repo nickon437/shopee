@@ -8,6 +8,7 @@ import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
 import ShippingPage from './pages/ShippingPage';
 import PaymentPage from './pages/PaymentPage';
+import PlaceOrderPage from './pages/PlaceOrderPage';
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
@@ -25,6 +26,7 @@ const App = () => {
           <Route path='/profile' component={ProfilePage} />
           <Route path='/shipping' component={ShippingPage} />
           <Route path='/payment' component={PaymentPage} />
+          <Route path='/placeorder' component={PlaceOrderPage} />
         </Container>
       </main>
       <Footer />
