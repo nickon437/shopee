@@ -1,6 +1,11 @@
 import asyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
 
+/**
+ * @description Create order itemss
+ * @route       POST /api/orders
+ * @access      Private
+ */
 const addOrderItems = asyncHandler(async (req, res) => {
   const {
     cartItems,
@@ -35,4 +40,20 @@ const addOrderItems = asyncHandler(async (req, res) => {
   res.status(201).json(order);
 });
 
-export { addOrderItems };
+/**
+ * @description Fetch order by id
+ * @route       GET /api/orders/:id
+ * @access      Private
+ */
+const getOrderById = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id).populate('user', 'name email');
+
+  if (order && (req.user.isAdmin || order.user._id.equals(req.user._id))) {
+    res.json(order);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
+export { addOrderItems, getOrderById };
