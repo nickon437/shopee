@@ -3,6 +3,9 @@ import {
   CREATE_ORDER_FAIL,
   CREATE_ORDER_REQUEST,
   CREATE_ORDER_SUCCESS,
+  GET_ORDER_FAIL,
+  GET_ORDER_REQUEST,
+  GET_ORDER_SUCCESS,
 } from '../constants/orderConstants';
 import axios from 'axios';
 
@@ -27,4 +30,25 @@ const addOrder = (order) => async (dispatch, getState) => {
   }
 };
 
-export { addOrder };
+const getOrder = (orderId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: GET_ORDER_REQUEST });
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/orders/${orderId}`, config);
+
+    dispatch({ type: GET_ORDER_SUCCESS, payload: data });
+  } catch (e) {
+    dispatch({
+      type: GET_ORDER_FAIL,
+      payload: e.response?.data.message ?? e.message,
+    });
+  }
+};
+
+export { addOrder, getOrder };
