@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   Col,
   Row,
@@ -8,10 +9,15 @@ import {
   Button,
 } from 'react-bootstrap';
 import CheckoutSteps from '../components/CheckoutSteps';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { addOrder } from '../actions/orderActions';
 
 const PlaceOrderPage = ({ history }) => {
+  const dispatch = useDispatch();
+
+  const orderState = useSelector((state) => state.orderState);
+
   const cartState = useSelector((state) => state.cartState);
   const { shippingAddress, paymentMethod, cartItems } = cartState;
 
@@ -29,6 +35,17 @@ const PlaceOrderPage = ({ history }) => {
     Number(cartState.shippingPrice) +
     Number(cartState.taxPrice)
   ).toFixed(2);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(addOrder(cartState));
+  };
+
+  useEffect(() => {
+    if (orderState.createdOrder._id) {
+      history.push(`/order/${orderState.createdOrder._id}`);
+    }
+  }, [history, orderState]);
 
   return (
     <>
@@ -102,7 +119,13 @@ const PlaceOrderPage = ({ history }) => {
                   </Col>
                   <Col>${cartState.totalPrice}</Col>
                 </Row>
-                <Button className='btn-block'>Place Order</Button>
+                <Button
+                  type='button'
+                  className='btn-block'
+                  onClick={handleSubmit}
+                >
+                  Place Order
+                </Button>
               </ListGroupItem>
             </ListGroup>
           </Card>
