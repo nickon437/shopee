@@ -42,7 +42,7 @@ const PlaceOrderPage = ({ history }) => {
   };
 
   useEffect(() => {
-    if (orderState.createdOrder._id) {
+    if (orderState.createdOrder?._id) {
       history.push(`/order/${orderState.createdOrder._id}`);
     }
   }, [history, orderState]);

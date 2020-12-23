@@ -11,6 +11,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
     cartItems,
     shippingAddress,
     paymentMethod,
+    itemsPrice,
     taxPrice,
     shippingPrice,
     totalPrice,
@@ -27,6 +28,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
     orderItems: cartItems,
     shippingAddress,
     paymentMethod,
+    itemsPrice,
     taxPrice,
     shippingPrice,
     totalPrice,
@@ -46,7 +48,10 @@ const addOrderItems = asyncHandler(async (req, res) => {
  * @access      Private
  */
 const getOrderById = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id).populate('user', 'name email');
+  const order = await Order.findById(req.params.id).populate(
+    'user',
+    'name email'
+  );
 
   if (order && (req.user.isAdmin || order.user._id.equals(req.user._id))) {
     res.json(order);

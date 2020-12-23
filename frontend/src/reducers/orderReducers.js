@@ -8,7 +8,7 @@ import {
 } from '../constants/orderConstants';
 
 const orderReducer = (
-  state = { orderItems: [], shippingAddress: {} },
+  state = { order: {orderItems: [], shippingAddress: {}} },
   action
 ) => {
   switch (action.type) {
