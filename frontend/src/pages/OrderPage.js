@@ -37,34 +37,34 @@ const PlaceOrderPage = ({ match }) => {
                 <h2>Shipping</h2>
                 <p>
                   <strong>Address: </strong>
-                  {order.shippingAddress?.address},{' '}
-                  {order.shippingAddress?.city}{' '}
-                  {order.shippingAddress?.postalCode},{' '}
-                  {order.shippingAddress?.country}
+                  {order?.shippingAddress.address},{' '}
+                  {order?.shippingAddress.city}{' '}
+                  {order?.shippingAddress.postalCode},{' '}
+                  {order?.shippingAddress.country}
                 </p>
-                {order.isDelivered ? (
+                {order?.isDelivered ? (
                   <Message variant='success'>
-                    Delivered on{order.deliveredAt}
+                    Delivered on{order?.deliveredAt}
                   </Message>
                 ) : (
                   <Message variant='danger'>Not Delivered</Message>
                 )}
                 <p>
                   <strong>Name: </strong>
-                  {order.user?.name}
+                  {order?.user.name}
                 </p>
                 <p>
                   <strong>Email: </strong>
-                  {order.user?.email}
+                  {order?.user.email}
                 </p>
               </ListGroupItem>
               <ListGroupItem>
                 <h2>Payment method</h2>
                 <p>
                   <strong>Method: </strong>
-                  {order.paymentMethod}
+                  {order?.paymentMethod}
                 </p>
-                {order.isPaid ? (
+                {order?.isPaid ? (
                   <Message variant='success'>Paid on{order.paidAt}</Message>
                 ) : (
                   <Message variant='danger'>Not Paid</Message>
@@ -73,7 +73,7 @@ const PlaceOrderPage = ({ match }) => {
               <ListGroupItem>
                 <h2>Order items</h2>
                 <ListGroup variant='flush'>
-                  {order.orderItems?.map((item, index) => (
+                  {order?.orderItems.map((item, index) => (
                     <ListGroupItem key={index}>
                       <Row>
                         <Col md={1}>
@@ -103,25 +103,25 @@ const PlaceOrderPage = ({ match }) => {
                     <Col>
                       <strong>Items:</strong>
                     </Col>
-                    <Col>${order.itemsPrice}</Col>
+                    <Col>${order?.itemsPrice}</Col>
                   </Row>
                   <Row>
                     <Col>
                       <strong>Tax:</strong>
                     </Col>
-                    <Col>${order.taxPrice}</Col>
+                    <Col>${order?.taxPrice}</Col>
                   </Row>
                   <Row>
                     <Col>
                       <strong>Shipping:</strong>
                     </Col>
-                    <Col>${order.shippingPrice}</Col>
+                    <Col>${order?.shippingPrice}</Col>
                   </Row>
                   <Row>
                     <Col>
                       <strong>Total:</strong>
                     </Col>
-                    <Col>${order.totalPrice}</Col>
+                    <Col>${order?.totalPrice}</Col>
                   </Row>
                 </ListGroupItem>
               </ListGroup>

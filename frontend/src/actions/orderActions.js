@@ -6,6 +6,9 @@ import {
   GET_ORDER_FAIL,
   GET_ORDER_REQUEST,
   GET_ORDER_SUCCESS,
+  PAY_ORDER_REQUEST,
+  PAY_ORDER_SUCCESS,
+  PAY_ORDER_FAIL,
 } from '../constants/orderConstants';
 import axios from 'axios';
 import { CART_RESET } from '../constants/cartConstants';
@@ -55,4 +58,30 @@ const getOrder = (orderId) => async (dispatch, getState) => {
   }
 };
 
-export { addOrder, getOrder };
+const payOrder = (orderId, paymentResult) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PAY_ORDER_REQUEST });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `/api/orders/${orderId}/pay`,
+      paymentResult,
+      config
+    );
+
+    dispatch({ type: PAY_ORDER_SUCCESS, payload: data });
+  } catch (e) {
+    dispatch({
+      type: PAY_ORDER_FAIL,
+      payload: e.response?.data.message ?? e.message,
+    });
+  }
+};
+
+export { addOrder, getOrder, payOrder };
