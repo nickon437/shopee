@@ -8,6 +8,7 @@ import {
   PAY_ORDER_REQUEST,
   PAY_ORDER_SUCCESS,
   PAY_ORDER_FAIL,
+  CLEAR_PAYMENT_SUCCESS,
 } from '../constants/orderConstants';
 
 const orderReducer = (state = {}, action) => {
@@ -27,12 +28,21 @@ const orderReducer = (state = {}, action) => {
     case GET_ORDER_SUCCESS:
       return { ...resettedState, order: action.payload };
 
+    case PAY_ORDER_SUCCESS:
+      return {
+        ...resettedState,
+        order: action.payload,
+        isPaymentSuccess: true,
+      };
+
     case CREATE_ORDER_FAIL:
     case GET_ORDER_FAIL:
     case PAY_ORDER_FAIL:
       return { ...resettedState, error: action.payload };
 
-    case PAY_ORDER_SUCCESS:
+    case CLEAR_PAYMENT_SUCCESS:
+      return { ...state, isPaymentSuccess: undefined };
+
     default:
       return state;
   }

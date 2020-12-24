@@ -67,7 +67,10 @@ const getOrderById = asyncHandler(async (req, res) => {
  * @access      Private
  */
 const updateOrderToPaid = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id);
+  const order = await Order.findById(req.params.id).populate(
+    'user',
+    'name email'
+  );
 
   if (order && (req.user.isAdmin || order.user._id.equals(req.user._id))) {
     order.isPaid = true;

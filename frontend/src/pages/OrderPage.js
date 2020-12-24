@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
   Col,
   Row,
@@ -9,25 +10,57 @@ import {
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getOrder } from '../actions/orderActions';
+import { getOrder, payOrder } from '../actions/orderActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { PayPalButton } from 'react-paypal-button-v2';
+import { CLEAR_PAYMENT_SUCCESS } from '../constants/orderConstants';
 
 const PlaceOrderPage = ({ match }) => {
+  const [isSdkReady, setSdkReady] = useState(false);
+
   const dispatch = useDispatch();
 
   const orderState = useSelector((state) => state.orderState);
-  const { order } = orderState;
+  const { order, loading, error, processingPayment } = orderState;
 
   useEffect(() => {
-    dispatch(getOrder(match.params.id));
-  }, [dispatch, match]);
+    const addPayPalScript = async () => {
+      const clientId = (await axios.get('/api/config/paypal')).data;
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      script.async = true;
+      script.onload = () => {
+        setSdkReady(true);
+      };
+      document.body.appendChild(script);
+    };
+
+    if (
+      match.params.id !== order?._id ||
+      (order?.isPaymentSuccess && order?.isPaid)
+    ) {
+      dispatch({ type: CLEAR_PAYMENT_SUCCESS });
+      dispatch(getOrder(match.params.id));
+    } else if (!order?.isPaid) {
+      if (!window.paypal) {
+        addPayPalScript();
+      } else {
+        setSdkReady(true);
+      }
+    }
+  }, [dispatch, match, order]);
+
+  const handleSuccessPayment = (paymentResult) => {
+    dispatch(payOrder(match.params.id, paymentResult));
+  };
 
   const orderPageContent = () => {
-    if (orderState.loading) {
+    if (loading) {
       return <Loader />;
-    } else if (orderState.error) {
-      return <Message variant='danger'>{orderState.error}</Message>;
+    } else if (error) {
+      return <Message variant='danger'>{error}</Message>;
     } else {
       return (
         <Row>
@@ -65,7 +98,7 @@ const PlaceOrderPage = ({ match }) => {
                   {order?.paymentMethod}
                 </p>
                 {order?.isPaid ? (
-                  <Message variant='success'>Paid on{order.paidAt}</Message>
+                  <Message variant='success'>Paid on {order.paidAt}</Message>
                 ) : (
                   <Message variant='danger'>Not Paid</Message>
                 )}
@@ -124,6 +157,19 @@ const PlaceOrderPage = ({ match }) => {
                     <Col>${order?.totalPrice}</Col>
                   </Row>
                 </ListGroupItem>
+                {!order?.isPaid && (
+                  <ListGroupItem>
+                    {processingPayment && <Loader />}
+                    {isSdkReady ? (
+                      <PayPalButton
+                        amount={order?.totalPrice}
+                        onSuccess={handleSuccessPayment}
+                      />
+                    ) : (
+                      <Loader />
+                    )}
+                  </ListGroupItem>
+                )}
               </ListGroup>
             </Card>
           </Col>
