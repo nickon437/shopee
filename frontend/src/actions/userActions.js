@@ -43,7 +43,7 @@ const login = (email, password) => async (dispatch) => {
 const logout = () => async (dispatch) => {
   dispatch({ type: USER_LOGOUT });
   localStorage.clear();
-  // TODO: Clear states
+  window.location.reload();
 };
 
 const register = (name, email, password) => async (dispatch) => {
