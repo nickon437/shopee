@@ -9,6 +9,9 @@ import {
   PAY_ORDER_REQUEST,
   PAY_ORDER_SUCCESS,
   PAY_ORDER_FAIL,
+  GET_MY_ORDERS_REQUEST,
+  GET_MY_ORDERS_SUCCESS,
+  GET_MY_ORDERS_FAIL,
 } from '../constants/orderConstants';
 import axios from 'axios';
 import { CART_RESET } from '../constants/cartConstants';
@@ -84,4 +87,25 @@ const payOrder = (orderId, paymentResult) => async (dispatch, getState) => {
   }
 };
 
-export { addOrder, getOrder, payOrder };
+const getMyOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: GET_MY_ORDERS_REQUEST });
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get('/api/orders/myorders', config);
+
+    dispatch({ type: GET_MY_ORDERS_SUCCESS, payload: data });
+  } catch (e) {
+    dispatch({
+      type: GET_MY_ORDERS_FAIL,
+      payload: e.response?.data.message ?? e.message,
+    });
+  }
+};
+
+export { addOrder, getOrder, payOrder, getMyOrders };

@@ -41,7 +41,6 @@ const PlaceOrderPage = ({ match }) => {
       match.params.id !== order?._id ||
       (order?.isPaymentSuccess && order?.isPaid)
     ) {
-      dispatch({ type: CLEAR_PAYMENT_SUCCESS });
       dispatch(getOrder(match.params.id));
     } else if (!order?.isPaid) {
       if (!window.paypal) {
