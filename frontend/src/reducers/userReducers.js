@@ -9,7 +9,14 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
+  FETCH_USER_LIST_REQUEST,
+  FETCH_USER_LIST_SUCCESS,
+  FETCH_USER_LIST_FAIL,
 } from '../constants/userConstants';
+
+const resetState = (state) => {
+  return { ...state, loading: false, error: undefined, users: undefined };
+};
 
 const userLoginReducer = (state = {}, action) => {
   switch (action.type) {
@@ -31,7 +38,7 @@ const userRegisterReducer = (state = {}, action) => {
     case USER_REGISTER_REQUEST:
       return { loading: true, error: null };
     case USER_REGISTER_SUCCESS:
-      return { loading: false }
+      return { loading: false };
     case USER_REGISTER_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -44,7 +51,7 @@ const userUpdateReducer = (state = {}, action) => {
     case USER_UPDATE_REQUEST:
       return { loading: true, error: null };
     case USER_UPDATE_SUCCESS:
-      return { loading: false }
+      return { loading: false };
     case USER_UPDATE_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -52,4 +59,19 @@ const userUpdateReducer = (state = {}, action) => {
   }
 };
 
-export { userLoginReducer, userRegisterReducer, userUpdateReducer };
+const userReducer = (state = {}, action) => {
+  const resettedState = resetState(state);
+  console.log('in userReducer')
+  switch (action.type) {
+    case FETCH_USER_LIST_REQUEST:
+      return { ...resettedState, loading: true };
+    case FETCH_USER_LIST_SUCCESS:
+      return { ...resettedState, users: action.payload };
+    case FETCH_USER_LIST_FAIL:
+      return { ...resettedState, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export { userLoginReducer, userRegisterReducer, userUpdateReducer, userReducer };

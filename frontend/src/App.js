@@ -12,6 +12,7 @@ import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderPage from './pages/OrderPage';
 import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import UserListPage from './pages/UserListPage';
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
           <Route path='/payment' component={PaymentPage} />
           <Route path='/placeorder' component={PlaceOrderPage} />
           <Route path='/order/:id' component={OrderPage} />
+          <Route path='/admin/userlist' component={UserListPage} />
         </Container>
       </main>
       <Footer />

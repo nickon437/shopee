@@ -9,6 +9,9 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
+  FETCH_USER_LIST_FAIL,
+  FETCH_USER_LIST_REQUEST,
+  FETCH_USER_LIST_SUCCESS,
 } from '../constants/userConstants';
 import 'redux-thunk';
 import axios from 'axios';
@@ -99,4 +102,25 @@ const update = (user) => async (dispatch, getState) => {
   }
 };
 
-export { login, logout, register, update };
+const getUserList = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: FETCH_USER_LIST_REQUEST });
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get('/api/user/', config);
+
+    dispatch({ type: FETCH_USER_LIST_SUCCESS, payload: data });
+  } catch (e) {
+    dispatch({
+      type: FETCH_USER_LIST_FAIL,
+      payload: e.response?.data.message ?? e.message,
+    });
+  }
+};
+
+export { login, logout, register, update, getUserList };

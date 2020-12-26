@@ -114,7 +114,7 @@ const updateUser = asyncHandler(async (req, res) => {
  * @route       GET /api/user
  * @access      Private / Admin
  */
-const getUsers = (req, res) => {
+const getUsers = async (req, res) => {
   const users = await User.find({});
   res.json(users);
 }
