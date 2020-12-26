@@ -12,6 +12,9 @@ import {
   FETCH_USER_LIST_FAIL,
   FETCH_USER_LIST_REQUEST,
   FETCH_USER_LIST_SUCCESS,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAIL,
 } from '../constants/userConstants';
 import 'redux-thunk';
 import axios from 'axios';
@@ -123,4 +126,25 @@ const getUserList = () => async (dispatch, getState) => {
   }
 };
 
-export { login, logout, register, update, getUserList };
+const deleteUser = (userId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: DELETE_USER_REQUEST });
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
+      },
+    };
+
+    await axios.delete(`/api/user/${userId}`, config);
+
+    dispatch({ type: DELETE_USER_SUCCESS });
+  } catch (e) {
+    dispatch({
+      type: DELETE_USER_FAIL,
+      payload: e.response?.data.message ?? e.message,
+    });
+  }
+};
+
+export { login, logout, register, update, getUserList, deleteUser };

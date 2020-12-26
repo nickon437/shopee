@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
-import { getUserList } from '../actions/userActions';
+import { getUserList, deleteUser } from '../actions/userActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
@@ -10,7 +10,7 @@ const UserListPage = ({ history }) => {
   const dispatch = useDispatch();
 
   const userState = useSelector((state) => state.userState);
-  const { loading, error, users } = userState;
+  const { loading, error, users, isDeleteSuccess } = userState;
 
   const userLoginState = useSelector((state) => state.userLoginState);
   const { userInfo } = userLoginState;
@@ -21,9 +21,13 @@ const UserListPage = ({ history }) => {
     }
 
     dispatch(getUserList());
-  }, [dispatch, userInfo, history]);
+  }, [dispatch, userInfo, history, isDeleteSuccess]);
 
-  const handleDeleteUser = (userId) => {};
+  const handleDeleteUser = (userId) => {
+    if (window.confirm('Are you sure?')) {
+      dispatch(deleteUser(userId));
+    }
+  };
 
   const getUserListContent = () => {
     if (loading) {
@@ -63,7 +67,7 @@ const UserListPage = ({ history }) => {
                   <Button
                     variant='danger'
                     className='btn-sm'
-                    onClick={handleDeleteUser(user._id)}
+                    onClick={(e) => handleDeleteUser(user._id)}
                   >
                     <i className='fas fa-trash' />
                   </Button>

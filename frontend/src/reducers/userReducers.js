@@ -12,10 +12,19 @@ import {
   FETCH_USER_LIST_REQUEST,
   FETCH_USER_LIST_SUCCESS,
   FETCH_USER_LIST_FAIL,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAIL,
 } from '../constants/userConstants';
 
 const resetState = (state) => {
-  return { ...state, loading: false, error: undefined, users: undefined };
+  return {
+    ...state,
+    loading: false,
+    error: undefined,
+    users: undefined,
+    isDeleteSuccess: undefined,
+  };
 };
 
 const userLoginReducer = (state = {}, action) => {
@@ -61,17 +70,30 @@ const userUpdateReducer = (state = {}, action) => {
 
 const userReducer = (state = {}, action) => {
   const resettedState = resetState(state);
-  console.log('in userReducer')
+
   switch (action.type) {
     case FETCH_USER_LIST_REQUEST:
+    case DELETE_USER_REQUEST:
       return { ...resettedState, loading: true };
+
     case FETCH_USER_LIST_SUCCESS:
       return { ...resettedState, users: action.payload };
+
     case FETCH_USER_LIST_FAIL:
+    case DELETE_USER_FAIL:
       return { ...resettedState, error: action.payload };
+
+    case DELETE_USER_SUCCESS:
+      return { ...resettedState, isDeleteSuccess: true };
+
     default:
       return state;
   }
 };
 
-export { userLoginReducer, userRegisterReducer, userUpdateReducer, userReducer };
+export {
+  userLoginReducer,
+  userRegisterReducer,
+  userUpdateReducer,
+  userReducer,
+};
