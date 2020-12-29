@@ -143,7 +143,7 @@ const deleteUser = async (req, res) => {
  */
 const getUserById = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const user = await User.findById(id).select('--password');
+  const user = await User.findById(id).select('-password');
 
   if (user) {
     res.json(user);
@@ -159,9 +159,9 @@ const getUserById = asyncHandler(async (req, res) => {
  * @access      Private / Admin
  */
 const updateUserById = asyncHandler(async (req, res) => {
-  const { name, email, isAdmin } = req.body;
+  const { _id,  name, email, isAdmin } = req.body;
 
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(_id);
 
   if (user) {
     user.name = name ?? user.name;

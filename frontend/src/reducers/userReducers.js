@@ -20,6 +20,7 @@ import {
   FETCH_USER_DETAILS_FAIL,
   UPDATE_USER_DETAILS_REQUEST,
   UPDATE_USER_DETAILS_FAIL,
+  UPDATE_USER_DETAILS_SUCCESS,
 } from '../constants/userConstants';
 
 const resetState = (state) => {
@@ -31,6 +32,7 @@ const resetState = (state) => {
     user: undefined,
     isDeleteSuccess: undefined,
     isUpdating: undefined,
+    hasUpdatedSuccessful: false,
   };
 };
 
@@ -97,11 +99,22 @@ const userReducer = (state = {}, action) => {
     case FETCH_USER_DETAILS_SUCCESS:
       return { ...resettedState, user: action.payload };
 
+    case UPDATE_USER_DETAILS_SUCCESS:
+      return {
+        ...resettedState,
+        user: action.payload,
+        hasUpdatedSuccessful: true,
+      };
+
     case FETCH_USER_LIST_FAIL:
     case FETCH_USER_DETAILS_FAIL:
     case DELETE_USER_FAIL:
     case UPDATE_USER_DETAILS_FAIL:
-      return { ...resettedState, error: action.payload };
+      return {
+        ...resettedState,
+        user: { ...state.user },
+        error: action.payload,
+      };
 
     case DELETE_USER_SUCCESS:
       return { ...resettedState, isDeleteSuccess: true };
