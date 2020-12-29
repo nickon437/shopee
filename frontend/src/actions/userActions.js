@@ -15,6 +15,12 @@ import {
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_FAIL,
+  FETCH_USER_DETAILS_REQUEST,
+  FETCH_USER_DETAILS_SUCCESS,
+  FETCH_USER_DETAILS_FAIL,
+  UPDATE_USER_DETAILS_REQUEST,
+  UPDATE_USER_DETAILS_SUCCESS,
+  UPDATE_USER_DETAILS_FAIL,
 } from '../constants/userConstants';
 import 'redux-thunk';
 import axios from 'axios';
@@ -147,4 +153,46 @@ const deleteUser = (userId) => async (dispatch, getState) => {
   }
 };
 
-export { login, logout, register, update, getUserList, deleteUser };
+const getUserById = (userId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: FETCH_USER_DETAILS_REQUEST });
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/user/${userId}`, config);
+
+    dispatch({ type: FETCH_USER_DETAILS_SUCCESS, payload: data });
+  } catch (e) {
+    dispatch({
+      type: FETCH_USER_DETAILS_FAIL,
+      payload: e.response?.data.message ?? e.message,
+    });
+  }
+};
+
+const updateUserById = (userId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: UPDATE_USER_DETAILS_REQUEST });
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/user/${userId}`, config);
+
+    dispatch({ type: UPDATE_USER_DETAILS_SUCCESS, payload: data });
+  } catch (e) {
+    dispatch({
+      type: UPDATE_USER_DETAILS_FAIL,
+      payload: e.response?.data.message ?? e.message,
+    })
+  }
+};
+
+export { login, logout, register, update, getUserList, deleteUser, getUserById, updateUserById };
