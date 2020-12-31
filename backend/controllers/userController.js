@@ -128,7 +128,7 @@ const deleteUser = async (req, res) => {
   const user = await User.findById(req.params.id);
 
   if (user) {
-    user.remove();
+    await user.remove();
     res.json({ message: 'User removed' });
   } else {
     res.status(404);
