@@ -14,6 +14,7 @@ import { Container } from 'react-bootstrap';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import UserListPage from './pages/UserListPage';
 import UserEditPage from './pages/UserEditPage';
+import ProductListPage from './pages/ProductListPage';
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
           <Route path='/order/:id' component={OrderPage} />
           <Route path='/admin/userlist' component={UserListPage} />
           <Route path='/admin/user/:id/edit' component={UserEditPage} />
+          <Route path='/admin/productlist' component={ProductListPage} />
         </Container>
       </main>
       <Footer />
