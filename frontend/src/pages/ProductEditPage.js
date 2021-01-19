@@ -71,6 +71,7 @@ const ProductEditPage = ({ match, history }) => {
     e.preventDefault();
 
     const productToSave = {
+      id: isNewProduct ? undefined : product._id,
       name: nameRef.current.value,
       price: priceRef.current.value,
       image: imageRef.current.value,
