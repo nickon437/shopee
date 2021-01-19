@@ -8,6 +8,9 @@ import {
   DELETE_PRODUCT_REQUEST,
   DELETE_PRODUCT_SUCCESS,
   DELETE_PRODUCT_FAIL,
+  UPDATE_PRODUCT_REQUEST,
+  UPDATE_PRODUCT_FAIL,
+  UPDATE_PRODUCT_SUCCESS,
 } from '../constants/productConstants';
 import axios from 'axios';
 import 'redux-thunk';
@@ -51,7 +54,7 @@ const deleteProduct = (id) => async (dispatch, getState) => {
         Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
       },
     };
-    
+
     await axios.delete(`/api/products/${id}`, config);
 
     dispatch({ type: DELETE_PRODUCT_SUCCESS });
@@ -65,4 +68,25 @@ const deleteProduct = (id) => async (dispatch, getState) => {
   }
 };
 
-export { fetchProductList, fetchProductDetails, deleteProduct };
+const createProduct = (product) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: UPDATE_PRODUCT_REQUEST });
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.post(`/api/products/`, product, config);
+
+    dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: data });
+  } catch (e) {
+    dispatch({
+      type: UPDATE_PRODUCT_FAIL,
+      payload: e.response?.data?.message ?? e.message,
+    });
+  }
+};
+
+export { fetchProductList, fetchProductDetails, deleteProduct, createProduct };

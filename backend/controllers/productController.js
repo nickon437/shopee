@@ -68,6 +68,7 @@ const createProduct = asyncHandler(async (req, res) => {
     category,
     price,
     countInStock,
+    user: req.user.id,
   });
 
   if (product) {

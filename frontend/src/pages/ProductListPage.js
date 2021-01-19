@@ -29,8 +29,6 @@ const ProductListPage = ({ history }) => {
     }
   };
 
-  const handleCreateProduct = () => {};
-
   const getProductListContent = () => {
     if (loading) {
       return <Loader />;
@@ -46,6 +44,7 @@ const ProductListPage = ({ history }) => {
               <th>PRICE</th>
               <th>CATEGORY</th>
               <th>BRAND</th>
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -56,9 +55,6 @@ const ProductListPage = ({ history }) => {
                 <td>${product.price}</td>
                 <td>{product.category}</td>
                 <td>{product.brand}</td>
-                <td>
-                  {<a href={`mailto:${product.email}`}>{product.email}</a>}
-                </td>
                 <td>
                   <LinkContainer to={`/admin/product/${product._id}/edit`}>
                     <Button variant='light' className='btn-sm'>
@@ -88,9 +84,11 @@ const ProductListPage = ({ history }) => {
           <h1>Products</h1>
         </Col>
         <Col className='text-right'>
-          <Button className='my-3' onClick={handleCreateProduct}>
-            <i className='fas fa-plus' /> Create Product
-          </Button>
+          <LinkContainer to='/admin/product/new/edit'>
+            <Button className='my-3'>
+              <i className='fas fa-plus' /> Create Product
+            </Button>
+          </LinkContainer>
         </Col>
       </Row>
       {isUpdating && <Loader />}
