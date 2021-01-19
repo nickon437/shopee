@@ -11,7 +11,11 @@ import {
   FormGroup,
   FormLabel,
 } from 'react-bootstrap';
-import { createProduct, updateProduct, fetchProductDetails } from '../actions/productActions';
+import {
+  createProduct,
+  updateProduct,
+  fetchProductDetails,
+} from '../actions/productActions';
 import { REFRESH_PRODUCT } from '../constants/productConstants';
 
 const ProductEditPage = ({ match, history }) => {
@@ -36,7 +40,7 @@ const ProductEditPage = ({ match, history }) => {
     error,
     product,
   } = productDetailsState;
-  
+
   const userLoginState = useSelector((state) => state.userLoginState);
   const { userInfo } = userLoginState;
 
@@ -65,7 +69,7 @@ const ProductEditPage = ({ match, history }) => {
       dispatch({ type: REFRESH_PRODUCT });
       history.push('/admin/productlist');
     }
-  }, [isUpdatedSuccessful, history, dispatch])
+  }, [isUpdatedSuccessful, history, dispatch]);
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -104,7 +108,13 @@ const ProductEditPage = ({ match, history }) => {
           </FormGroup>
           <FormGroup controlId='price'>
             <FormLabel>Price</FormLabel>
-            <FormControl type='text' placeholder='Enter price' ref={priceRef} />
+            <FormControl
+              type='number'
+              placeholder='Enter price'
+              ref={priceRef}
+              step='0.01'
+              pattern='^\d+(?:\.\d{1,2})?$'
+            />
           </FormGroup>
           <FormGroup controlId='image'>
             <FormLabel>Image</FormLabel>
@@ -121,7 +131,7 @@ const ProductEditPage = ({ match, history }) => {
           <FormGroup controlId='countInStock'>
             <FormLabel>Count In Stock</FormLabel>
             <FormControl
-              type='text'
+              type='number'
               placeholder='Enter amount of stock'
               ref={countInStockRef}
             />
