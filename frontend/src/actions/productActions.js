@@ -74,6 +74,7 @@ const createProduct = (product) => async (dispatch, getState) => {
 
     const config = {
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
       },
     };
@@ -88,5 +89,32 @@ const createProduct = (product) => async (dispatch, getState) => {
     });
   }
 };
+const updateProduct = (product) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: UPDATE_PRODUCT_REQUEST });
 
-export { fetchProductList, fetchProductDetails, deleteProduct, createProduct };
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/products/${product.id}`, product, config);
+
+    dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: data });
+  } catch (e) {
+    dispatch({
+      type: UPDATE_PRODUCT_FAIL,
+      payload: e.response?.data?.message ?? e.message,
+    });
+  }
+};
+
+export {
+  fetchProductList,
+  fetchProductDetails,
+  deleteProduct,
+  createProduct,
+  updateProduct,
+};

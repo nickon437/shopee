@@ -11,7 +11,7 @@ import {
   FormGroup,
   FormLabel,
 } from 'react-bootstrap';
-import { createProduct, fetchProductDetails } from '../actions/productActions';
+import { createProduct, updateProduct, fetchProductDetails } from '../actions/productActions';
 import { REFRESH_PRODUCT } from '../constants/productConstants';
 
 const ProductEditPage = ({ match, history }) => {
@@ -76,6 +76,7 @@ const ProductEditPage = ({ match, history }) => {
     if (isNewProduct) {
       dispatch(createProduct(productToSave));
     } else {
+      dispatch(updateProduct(productToSave));
     }
   };
 
