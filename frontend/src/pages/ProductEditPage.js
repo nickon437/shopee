@@ -26,6 +26,8 @@ const ProductEditPage = ({ match, history }) => {
   const categoryRef = useRef();
   const descriptionRef = useRef();
 
+  const dispatch = useDispatch();
+
   const productDetailsState = useSelector((state) => state.productDetailsState);
   const {
     loading,
@@ -34,8 +36,13 @@ const ProductEditPage = ({ match, history }) => {
     error,
     product,
   } = productDetailsState;
+  
+  const userLoginState = useSelector((state) => state.userLoginState);
+  const { userInfo } = userLoginState;
 
-  const dispatch = useDispatch();
+  if (!userInfo?.isAdmin) {
+    history.push('/login');
+  }
 
   useEffect(() => {
     if (!isNewProduct && product._id !== productId) {

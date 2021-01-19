@@ -14,7 +14,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { getUserById, updateUserById } from '../actions/userActions';
 
-const UserEditPage = ({ match }) => {
+const UserEditPage = ({ match, history }) => {
   const nameRef = useRef(null);
   const emailRef = useRef(null);
   const isAdminRef = useRef(null);
@@ -23,6 +23,13 @@ const UserEditPage = ({ match }) => {
 
   const userState = useSelector((state) => state.userState);
   const { loading, error, user, hasUpdatedSuccessful } = userState;
+
+  const userLoginState = useSelector((state) => state.userLoginState);
+  const { userInfo } = userLoginState;
+  
+  if (!userInfo?.isAdmin) {
+    history.push('/login');
+  }
 
   useEffect(() => {
     if (match.params.id !== user?._id) {
