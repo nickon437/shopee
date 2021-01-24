@@ -14,7 +14,6 @@ import { getOrder, payOrder } from '../actions/orderActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { PayPalButton } from 'react-paypal-button-v2';
-import { CLEAR_PAYMENT_SUCCESS } from '../constants/orderConstants';
 
 const PlaceOrderPage = ({ match, history }) => {
   const [isSdkReady, setSdkReady] = useState(false);

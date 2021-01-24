@@ -8,7 +8,6 @@ import {
   PAY_ORDER_REQUEST,
   PAY_ORDER_SUCCESS,
   PAY_ORDER_FAIL,
-  CLEAR_PAYMENT_SUCCESS,
   GET_MY_ORDERS_REQUEST,
   GET_MY_ORDERS_SUCCESS,
   GET_MY_ORDERS_FAIL,
@@ -59,9 +58,6 @@ const orderReducer = (state = {}, action) => {
     case PAY_ORDER_FAIL:
     case GET_MY_ORDERS_FAIL:
       return { ...refreshedState, error: action.payload };
-
-    case CLEAR_PAYMENT_SUCCESS:
-      return { ...state, isPaymentSuccess: undefined };
 
     default:
       return state;
