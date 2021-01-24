@@ -15,6 +15,9 @@ import {
   CREATE_PRODUCT_FAIL,
   UPDATE_PRODUCT_FAIL,
   REFRESH_PRODUCT,
+  UPLOAD_IMAGE_REQUEST,
+  UPLOAD_IMAGE_SUCCESS,
+  UPLOAD_IMAGE_FAIL,
 } from '../constants/productConstants';
 
 const productListReducer = (state = { productList: [] }, action) => {
@@ -96,4 +99,24 @@ const productDetailsReducer = (
   }
 };
 
-export { productListReducer, productDetailsReducer };
+const imageUploadReducer = (state = {}, action) => {
+  const refreshState = (state) => ({
+    isLoading: false,
+    error: null,
+  });
+
+  const refreshedState = refreshState(state);
+
+  switch (action.type) {
+    case UPLOAD_IMAGE_REQUEST:
+      return { ...refreshedState, isLoading: true };
+    case UPLOAD_IMAGE_SUCCESS:
+      return { ...refreshedState, imagePath: action.payload };
+    case UPLOAD_IMAGE_FAIL:
+      return { ...refreshedState, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export { productListReducer, productDetailsReducer, imageUploadReducer };

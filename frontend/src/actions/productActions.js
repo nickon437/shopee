@@ -11,6 +11,9 @@ import {
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_FAIL,
   UPDATE_PRODUCT_SUCCESS,
+  UPLOAD_IMAGE_REQUEST,
+  UPLOAD_IMAGE_SUCCESS,
+  UPLOAD_IMAGE_FAIL,
 } from '../constants/productConstants';
 import axios from 'axios';
 import 'redux-thunk';
@@ -100,7 +103,11 @@ const updateProduct = (product) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put(`/api/products/${product.id}`, product, config);
+    const { data } = await axios.put(
+      `/api/products/${product.id}`,
+      product,
+      config
+    );
 
     dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: data });
   } catch (e) {
@@ -111,10 +118,31 @@ const updateProduct = (product) => async (dispatch, getState) => {
   }
 };
 
+const uploadImage = (file) => async (dispatch) => {
+  try {
+    dispatch({ type: UPLOAD_IMAGE_REQUEST });
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+
+    const { data } = await axios.post('/api/upload', formData, config);
+
+    dispatch({ type: UPLOAD_IMAGE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: UPLOAD_IMAGE_FAIL, payload: error });
+  }
+};
+
 export {
   fetchProductList,
   fetchProductDetails,
   deleteProduct,
   createProduct,
   updateProduct,
+  uploadImage,
 };

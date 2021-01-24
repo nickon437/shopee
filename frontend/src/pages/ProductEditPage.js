@@ -15,6 +15,7 @@ import {
   createProduct,
   updateProduct,
   fetchProductDetails,
+  uploadImage,
 } from '../actions/productActions';
 import { REFRESH_PRODUCT } from '../constants/productConstants';
 
@@ -41,12 +42,29 @@ const ProductEditPage = ({ match, history }) => {
     product,
   } = productDetailsState;
 
+  const imageUploadState = useSelector((state) => state.imageUploadState);
+  const {
+    isLoading: isImageUploading,
+    imagePath,
+    error: imageUploadingError,
+  } = imageUploadState;
+
   const userLoginState = useSelector((state) => state.userLoginState);
   const { userInfo } = userLoginState;
 
   if (!userInfo?.isAdmin) {
     history.push('/login');
   }
+
+  useEffect(() => {
+    if (!isImageUploading) {
+      if (imageUploadingError) {
+        console.error(imageUploadingError);
+      } else {
+        imageRef.current.value = imagePath ?? '';
+      }
+    }
+  }, [isImageUploading, imagePath, imageUploadingError]);
 
   useEffect(() => {
     if (!isNewProduct && product._id !== productId) {
@@ -92,6 +110,13 @@ const ProductEditPage = ({ match, history }) => {
     }
   };
 
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    await dispatch(uploadImage(file));
+
+    
+  };
+
   return (
     <>
       <Link to='/admin/productlist' className='btn btn-light my-3'>
@@ -123,6 +148,13 @@ const ProductEditPage = ({ match, history }) => {
               placeholder='Enter image link'
               ref={imageRef}
             />
+            <Form.File
+              id='image-file'
+              label='Choose File'
+              custom
+              onChange={handleUpload}
+            />
+            {isImageUploading && <Loader />}
           </FormGroup>
           <FormGroup controlId='brand'>
             <FormLabel>Brand</FormLabel>
