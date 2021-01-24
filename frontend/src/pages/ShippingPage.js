@@ -64,7 +64,7 @@ const ShippingPage = ({ history }) => {
           <FormLabel>PostalCode</FormLabel>
           <FormControl
             type='text'
-            placeholder='Enter postalCode'
+            placeholder='Enter postal code'
             required
             value={postalCode}
             onChange={(e) => setPostalCode(e.target.value)}

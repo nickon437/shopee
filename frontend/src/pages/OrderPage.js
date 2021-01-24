@@ -16,13 +16,20 @@ import Message from '../components/Message';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { CLEAR_PAYMENT_SUCCESS } from '../constants/orderConstants';
 
-const PlaceOrderPage = ({ match }) => {
+const PlaceOrderPage = ({ match, history }) => {
   const [isSdkReady, setSdkReady] = useState(false);
 
   const dispatch = useDispatch();
 
   const orderState = useSelector((state) => state.orderState);
   const { order, loading, error, processingPayment } = orderState;
+
+  const userLoginState = useSelector((state) => state.userLoginState);
+  const { userInfo } = userLoginState;
+
+  if (!userInfo) {
+    history.push('/login');
+  }
 
   useEffect(() => {
     const addPayPalScript = async () => {
