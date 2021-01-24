@@ -13,7 +13,7 @@ import {
   userRegisterReducer,
   userUpdateReducer,
 } from './reducers/userReducers';
-import { orderReducer } from './reducers/orderReducers';
+import { orderReducer, orderListReducer } from './reducers/orderReducers';
 
 const reducer = combineReducers({
   productListState: productListReducer,
@@ -24,6 +24,7 @@ const reducer = combineReducers({
   userUpdateState: userUpdateReducer,
   userState: userReducer,
   orderState: orderReducer,
+  orderListState: orderListReducer,
   imageUploadState: imageUploadReducer,
 });
 

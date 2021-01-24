@@ -12,6 +12,9 @@ import {
   GET_MY_ORDERS_REQUEST,
   GET_MY_ORDERS_SUCCESS,
   GET_MY_ORDERS_FAIL,
+  GET_ALL_ORDERS_REQUEST,
+  GET_ALL_ORDERS_SUCCESS,
+  GET_ALL_ORDERS_FAIL,
 } from '../constants/orderConstants';
 import axios from 'axios';
 import { CART_RESET } from '../constants/cartConstants';
@@ -108,4 +111,25 @@ const getMyOrders = () => async (dispatch, getState) => {
   }
 };
 
-export { addOrder, getOrder, payOrder, getMyOrders };
+const getAllOrders = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: GET_ALL_ORDERS_REQUEST });
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get('/api/orders', config);
+
+    dispatch({ type: GET_ALL_ORDERS_SUCCESS, payload: data });
+  } catch (e) {
+    dispatch({
+      type: GET_ALL_ORDERS_FAIL,
+      payload: e.response?.data.message ?? e.message,
+    });
+  }
+};
+
+export { addOrder, getOrder, payOrder, getMyOrders, getAllOrders };
