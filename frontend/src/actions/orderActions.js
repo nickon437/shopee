@@ -15,6 +15,9 @@ import {
   GET_ALL_ORDERS_REQUEST,
   GET_ALL_ORDERS_SUCCESS,
   GET_ALL_ORDERS_FAIL,
+  DELIVER_ORDER_REQUEST,
+  DELIVER_ORDER_SUCCESS,
+  DELIVER_ORDER_FAIL,
 } from '../constants/orderConstants';
 import axios from 'axios';
 import { CART_RESET } from '../constants/cartConstants';
@@ -90,6 +93,31 @@ const payOrder = (orderId, paymentResult) => async (dispatch, getState) => {
   }
 };
 
+const deliverOrder = (orderId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: DELIVER_ORDER_REQUEST });
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      `/api/orders/${orderId}/deliver`,
+      {},
+      config
+    );
+
+    dispatch({ type: DELIVER_ORDER_SUCCESS, payload: data });
+  } catch (e) {
+    dispatch({
+      type: DELIVER_ORDER_FAIL,
+      payload: e.response?.data.message ?? e.message,
+    });
+  }
+};
+
 const getMyOrders = () => async (dispatch, getState) => {
   try {
     dispatch({ type: GET_MY_ORDERS_REQUEST });
@@ -132,4 +160,11 @@ const getAllOrders = () => async (dispatch, getState) => {
   }
 };
 
-export { addOrder, getOrder, payOrder, getMyOrders, getAllOrders };
+export {
+  addOrder,
+  getOrder,
+  payOrder,
+  deliverOrder,
+  getMyOrders,
+  getAllOrders,
+};

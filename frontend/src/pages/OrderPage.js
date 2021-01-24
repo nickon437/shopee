@@ -7,10 +7,11 @@ import {
   ListGroupItem,
   Image,
   Card,
+  Button,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getOrder, payOrder } from '../actions/orderActions';
+import { deliverOrder, getOrder, payOrder } from '../actions/orderActions';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { PayPalButton } from 'react-paypal-button-v2';
@@ -59,6 +60,10 @@ const PlaceOrderPage = ({ match, history }) => {
 
   const handleSuccessPayment = (paymentResult) => {
     dispatch(payOrder(match.params.id, paymentResult));
+  };
+
+  const handleMarkDelivered = () => {
+    dispatch(deliverOrder(order._id));
   };
 
   const orderPageContent = () => {
@@ -173,6 +178,14 @@ const PlaceOrderPage = ({ match, history }) => {
                     ) : (
                       <Loader />
                     )}
+                  </ListGroupItem>
+                )}
+
+                {order?.isPaid && userInfo.isAdmin && !order?.isDelivered && (
+                  <ListGroupItem>
+                    <Button className='btn-block' onClick={handleMarkDelivered}>
+                      Mark as delivered
+                    </Button>
                   </ListGroupItem>
                 )}
               </ListGroup>

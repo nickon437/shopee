@@ -14,6 +14,9 @@ import {
   GET_ALL_ORDERS_REQUEST,
   GET_ALL_ORDERS_SUCCESS,
   GET_ALL_ORDERS_FAIL,
+  DELIVER_ORDER_REQUEST,
+  DELIVER_ORDER_SUCCESS,
+  DELIVER_ORDER_FAIL,
 } from '../constants/orderConstants';
 
 const orderReducer = (state = {}, action) => {
@@ -23,8 +26,6 @@ const orderReducer = (state = {}, action) => {
     error: undefined,
     processingPayment: false,
     createdOrder: undefined,
-    order: undefined,
-    orders: undefined,
     isPaymentSuccess: undefined,
   };
 
@@ -32,6 +33,7 @@ const orderReducer = (state = {}, action) => {
     case CREATE_ORDER_REQUEST:
     case GET_ORDER_REQUEST:
     case GET_MY_ORDERS_REQUEST:
+    case DELIVER_ORDER_REQUEST:
       return { ...refreshedState, loading: true };
 
     case PAY_ORDER_REQUEST:
@@ -41,6 +43,7 @@ const orderReducer = (state = {}, action) => {
       return { ...refreshedState, createdOrder: action.payload };
 
     case GET_ORDER_SUCCESS:
+    case DELIVER_ORDER_SUCCESS:
       return { ...refreshedState, order: action.payload };
 
     case GET_MY_ORDERS_SUCCESS:
@@ -57,6 +60,7 @@ const orderReducer = (state = {}, action) => {
     case GET_ORDER_FAIL:
     case PAY_ORDER_FAIL:
     case GET_MY_ORDERS_FAIL:
+    case DELIVER_ORDER_FAIL:
       return { ...refreshedState, error: action.payload };
 
     default:
