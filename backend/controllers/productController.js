@@ -118,4 +118,52 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 });
 
-export { getProducts, getProductById, deleteProduct, createProduct, updateProduct };
+/**
+ * @description Create new review
+ * @route       POST /api/product/:id/reivew
+ * @access      Private
+ */
+const createProductReview = asyncHandler(async (req, res) => {
+  const { rating, comment } = req.body;
+
+  const product = await Product.findById(id);
+
+  if (product) {
+    const isReviewed = product.reviews.find(
+      (review) => review.user === req.user._id
+    );
+
+    if (isReviewed) {
+      res.status(404);
+      throw new Error('Product was already reviewed');
+    }
+
+    const review = {
+      rating: Number(rating),
+      comment: comment,
+      user: req.user._id,
+    };
+
+    product.reviews.push(review);
+    product.numReviews = product.reviews.length;
+    product.rating =
+      product.reviews.reduce((acc, review) => {
+        acc + review.rating;
+      }, 0) / product.reviews.length;
+
+    await product.save();
+    res.status(201).json({ product });
+  } else {
+    res.status(404);
+    throw new Error('Fail to update product');
+  }
+});
+
+export {
+  getProducts,
+  getProductById,
+  deleteProduct,
+  createProduct,
+  updateProduct,
+  createProductReview,
+};
