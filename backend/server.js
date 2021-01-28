@@ -16,7 +16,7 @@ connectDB();
 
 const app = express();
 
-if (process.end.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 

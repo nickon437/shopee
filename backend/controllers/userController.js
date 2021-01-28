@@ -159,7 +159,7 @@ const getUserById = asyncHandler(async (req, res) => {
  * @access      Private / Admin
  */
 const updateUserById = asyncHandler(async (req, res) => {
-  const { _id,  name, email, isAdmin } = req.body;
+  const { _id, name, email, isAdmin } = req.body;
 
   const user = await User.findById(_id);
 

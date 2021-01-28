@@ -125,12 +125,11 @@ const updateProduct = asyncHandler(async (req, res) => {
  */
 const createProductReview = asyncHandler(async (req, res) => {
   const { rating, comment } = req.body;
-
-  const product = await Product.findById(id);
+  const product = await Product.findById(req.params.id);
 
   if (product) {
     const isReviewed = product.reviews.find(
-      (review) => review.user === req.user._id
+      (review) => review.user.toString() === req.user._id.toString()
     );
 
     if (isReviewed) {
@@ -140,19 +139,20 @@ const createProductReview = asyncHandler(async (req, res) => {
 
     const review = {
       rating: Number(rating),
-      comment: comment,
+      comment,
       user: req.user._id,
+      name: req.user.name,
     };
 
     product.reviews.push(review);
     product.numReviews = product.reviews.length;
+
     product.rating =
-      product.reviews.reduce((acc, review) => {
-        acc + review.rating;
-      }, 0) / product.reviews.length;
+      product.reviews.reduce((acc, review) => acc + review.rating, 0) /
+      product.reviews.length;
 
     await product.save();
-    res.status(201).json({ product });
+    res.status(201).json(product);
   } else {
     res.status(404);
     throw new Error('Fail to update product');
