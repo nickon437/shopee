@@ -18,6 +18,9 @@ import {
   UPLOAD_IMAGE_REQUEST,
   UPLOAD_IMAGE_SUCCESS,
   UPLOAD_IMAGE_FAIL,
+  CREATE_REVIEW_REQUEST,
+  CREATE_REVIEW_SUCCESS,
+  CREATE_REVIEW_FAIL,
 } from '../constants/productConstants';
 
 const productListReducer = (state = { productList: [] }, action) => {
@@ -60,9 +63,11 @@ const productDetailsReducer = (
   const refreshState = (state) => ({
     ...state,
     loading: false,
+    isReviewLoading: false,
     isUpdating: false,
     isUpdatedSuccessful: false,
-    error: null,
+    error: undefined,
+    createReviewError: undefined,
   });
 
   const refreshedState = refreshState(state);
@@ -75,10 +80,19 @@ const productDetailsReducer = (
     case UPDATE_PRODUCT_REQUEST:
       return { ...refreshedState, isUpdating: true };
 
+    case CREATE_REVIEW_REQUEST:
+      return { ...refreshedState, isReviewLoading: true };
+
     case FETCH_PRODUCT_DETAILS_SUCCESS:
       return { ...refreshedState, product: action.payload };
 
     case CREATE_PRODUCT_SUCCESS:
+    case CREATE_REVIEW_SUCCESS:
+      return {
+        ...refreshedState,
+        product: action.payload,
+      };
+
     case UPDATE_PRODUCT_SUCCESS:
       return {
         ...refreshedState,
@@ -91,6 +105,9 @@ const productDetailsReducer = (
     case UPDATE_PRODUCT_FAIL:
       return { ...refreshedState, error: action.payload };
 
+    case CREATE_REVIEW_FAIL:
+      return { ...refreshedState, createReviewError: action.payload };
+
     case REFRESH_PRODUCT:
       return { ...refreshedState };
 
@@ -101,6 +118,7 @@ const productDetailsReducer = (
 
 const imageUploadReducer = (state = {}, action) => {
   const refreshState = (state) => ({
+    ...state,
     isLoading: false,
     error: null,
   });

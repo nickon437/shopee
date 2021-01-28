@@ -14,6 +14,11 @@ import {
   UPLOAD_IMAGE_REQUEST,
   UPLOAD_IMAGE_SUCCESS,
   UPLOAD_IMAGE_FAIL,
+  CREATE_REVIEW_REQUEST,
+  CREATE_PRODUCT_SUCCESS,
+  CREATE_PRODUCT_FAIL,
+  CREATE_REVIEW_SUCCESS,
+  CREATE_REVIEW_FAIL,
 } from '../constants/productConstants';
 import axios from 'axios';
 import 'redux-thunk';
@@ -92,6 +97,7 @@ const createProduct = (product) => async (dispatch, getState) => {
     });
   }
 };
+
 const updateProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
@@ -138,6 +144,35 @@ const uploadImage = (file) => async (dispatch) => {
   }
 };
 
+const createReview = (productId, rating, comment) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    dispatch({ type: CREATE_REVIEW_REQUEST });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getState().userLoginState.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.post(
+      `/api/products/${productId}/review`,
+      { rating, comment },
+      config
+    );
+
+    dispatch({ type: CREATE_REVIEW_SUCCESS, payload: data });
+  } catch (e) {
+    dispatch({
+      type: CREATE_REVIEW_FAIL,
+      payload: e.response?.data?.message ?? e.message,
+    });
+  }
+};
+
 export {
   fetchProductList,
   fetchProductDetails,
@@ -145,4 +180,5 @@ export {
   createProduct,
   updateProduct,
   uploadImage,
+  createReview,
 };

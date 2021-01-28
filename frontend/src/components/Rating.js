@@ -6,7 +6,9 @@ const Rating = ({ value, numReviews, color }) => {
     if (value - i >= 1) {
       stars.push(<i key={i} style={{ color }} className='fas fa-star' />);
     } else if (value - i >= 0.5) {
-      stars.push(<i key={i} style={{ color }} className='fas fa-star-half-alt' />);
+      stars.push(
+        <i key={i} style={{ color }} className='fas fa-star-half-alt' />
+      );
     } else {
       stars.push(<i key={i} style={{ color }} className='far fa-star' />);
     }
@@ -15,7 +17,7 @@ const Rating = ({ value, numReviews, color }) => {
   return (
     <div className='rating my-3'>
       {stars}
-      <span>{`${numReviews} reviews`}</span>
+      {numReviews && <span>{`${numReviews} reviews`}</span>}
     </div>
   );
 };
