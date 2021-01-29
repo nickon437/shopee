@@ -17,7 +17,9 @@ const Rating = ({ value, numReviews, color }) => {
   return (
     <div className='rating my-3'>
       {stars}
-      {numReviews && <span>{`${numReviews} reviews`}</span>}
+      {numReviews >= 0 && (
+        <span>{`${numReviews} ${numReviews > 1 ? 'reviews' : 'review'}`}</span>
+      )}
     </div>
   );
 };
