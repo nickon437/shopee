@@ -21,11 +21,17 @@ import {
   CREATE_REVIEW_REQUEST,
   CREATE_REVIEW_SUCCESS,
   CREATE_REVIEW_FAIL,
+  FILTER_PRODUCT_LIST,
+  FILTER_PRODUCT_LIST_REQUEST,
 } from '../constants/productConstants';
 
-const productListReducer = (state = { productList: [] }, action) => {
+const productListReducer = (
+  state = { fullProductList: [], productList: [] },
+  action
+) => {
   const refreshState = (state) => ({
     ...state,
+    fullProductList: [...state.fullProductList],
     productList: [...state.productList],
     loading: false,
     isUpdating: false,
@@ -41,15 +47,35 @@ const productListReducer = (state = { productList: [] }, action) => {
     case DELETE_PRODUCT_REQUEST:
       return { ...refreshedState, isUpdating: true };
 
+    case FILTER_PRODUCT_LIST_REQUEST:
+      return {
+        ...refreshedState,
+        searchedInput: action.payload.searchedInput,
+        isRedirecting: action.payload.isRedirecting,
+        hasSearchRequest: true,
+      };
+
     case FETCH_PRODUCT_LIST_SUCCESS:
-      return { ...refreshedState, productList: action.payload };
+      return {
+        ...refreshedState,
+        fullProductList: action.payload,
+        productList: action.payload,
+        isRedirecting: false,
+      };
+
+    case FILTER_PRODUCT_LIST:
+      return {
+        ...refreshedState,
+        productList: action.payload,
+        hasSearchRequest: false,
+      };
+
+    case DELETE_PRODUCT_SUCCESS:
+      return refreshedState;
 
     case FETCH_PRODUCT_LIST_FAIL:
     case DELETE_PRODUCT_FAIL:
       return { ...refreshedState, error: action.payload };
-
-    case DELETE_PRODUCT_SUCCESS:
-      return refreshedState;
 
     default:
       return state;

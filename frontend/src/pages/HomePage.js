@@ -9,7 +9,7 @@ import { fetchProductList } from '../actions/productActions';
 const HomePage = () => {
   const dispatch = useDispatch();
   const productListState = useSelector((state) => state.productListState);
-  const {loading, error, productList} = productListState;
+  const { loading, error, productList } = productListState;
 
   useEffect(() => {
     dispatch(fetchProductList());

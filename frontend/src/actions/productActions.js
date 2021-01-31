@@ -20,6 +20,7 @@ import {
   CREATE_REVIEW_REQUEST,
   CREATE_REVIEW_SUCCESS,
   CREATE_REVIEW_FAIL,
+  FILTER_PRODUCT_LIST,
 } from '../constants/productConstants';
 import axios from 'axios';
 import 'redux-thunk';
@@ -174,6 +175,18 @@ const createReview = (productId, rating, comment) => async (
   }
 };
 
+const filterProductList = () => async (dispatch, getState) => {
+  const searchedInput = getState().productListState.searchedInput;
+  const fullProductList = getState().productListState.fullProductList;
+  const productList = searchedInput
+    ? fullProductList.filter((product) =>
+        product.name.toLowerCase().includes(searchedInput.toLowerCase())
+      )
+    : fullProductList;
+
+  dispatch({ type: FILTER_PRODUCT_LIST, payload: productList });
+};
+
 export {
   fetchProductList,
   fetchProductDetails,
@@ -182,4 +195,5 @@ export {
   updateProduct,
   uploadImage,
   createReview,
+  filterProductList,
 };
