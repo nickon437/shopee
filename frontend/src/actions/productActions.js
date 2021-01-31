@@ -14,9 +14,10 @@ import {
   UPLOAD_IMAGE_REQUEST,
   UPLOAD_IMAGE_SUCCESS,
   UPLOAD_IMAGE_FAIL,
-  CREATE_REVIEW_REQUEST,
+  CREATE_PRODUCT_REQUEST,
   CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAIL,
+  CREATE_REVIEW_REQUEST,
   CREATE_REVIEW_SUCCESS,
   CREATE_REVIEW_FAIL,
 } from '../constants/productConstants';
@@ -78,7 +79,7 @@ const deleteProduct = (id) => async (dispatch, getState) => {
 
 const createProduct = (product) => async (dispatch, getState) => {
   try {
-    dispatch({ type: UPDATE_PRODUCT_REQUEST });
+    dispatch({ type: CREATE_PRODUCT_REQUEST });
 
     const config = {
       headers: {
@@ -89,10 +90,10 @@ const createProduct = (product) => async (dispatch, getState) => {
 
     const { data } = await axios.post(`/api/products/`, product, config);
 
-    dispatch({ type: UPDATE_PRODUCT_SUCCESS, payload: data });
+    dispatch({ type: CREATE_PRODUCT_SUCCESS, payload: data });
   } catch (e) {
     dispatch({
-      type: UPDATE_PRODUCT_FAIL,
+      type: CREATE_PRODUCT_FAIL,
       payload: e.response?.data?.message ?? e.message,
     });
   }
