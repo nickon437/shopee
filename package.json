@@ -1,6 +1,7 @@
 {
   "name": "shopee",
   "version": "1.0.0",
+  "engines": { "node": "14.15.1" },
   "description": "Just an e-commerce site",
   "main": "index.js",
   "type": "module",
